@@ -1,2 +1,3 @@
 .snakemake/*
 docs/work/
+.DS_Store
