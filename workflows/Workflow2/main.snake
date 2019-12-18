@@ -1,0 +1,68 @@
+### BEGIN ###
+
+from snakemake.utils import min_version
+min_version("5.7.4")
+
+include: "includes/help/Workflow.man"
+
+rule all:
+	"""Phony: Runs all tasks
+   	Type: Task (Phony)
+    Parameters:
+		[In] The output file(s) to start the recursive chain of tasks
+    Returns:
+		None
+	"""
+	input:
+		"data/ip2geo.csv",
+		"data/name2geo.csv"
+
+rule name2ip:
+    message: "[Task] Runs host resolution for a single domain into pipe"
+	log: 
+		"logs/name2ip.log"
+	input: 
+		"cdata/AlexaTop/top50.in"
+	output: 
+		"data/ip.out" # Do preserve resolution intermediaries (long running effort)
+		# temp("data/ip.out") # Do not preserve resolution intermediaries (cruft)
+	shell:
+		'cat {input} | while read x ; do echo $x ; host $x | grep  "has address" | cut -d" " -f4,4 >> {output}; done'	
+
+rule ip2geo:
+    """Runs Geolocation for a list of IPs
+
+    Type: Task
+    Parameters: None
+    Returns: Geo results
+    Notes: 
+
+    """
+	message: "[Task] Runs Geolocation for a list of IPs"
+	log: "logs/ip2geo.log"
+	input: 
+		protected("data/ip.out")
+	output: 
+		"data/ip2geo.csv"
+	shell: 
+		"scripts/GeoLocate/host2geo.sh {input} {output} {log}"
+
+rule name2geo:
+    """Runs Geolocation for a list of names
+
+    Type: Task
+    Parameters: None
+    Returns: Geo results
+    Notes: 
+
+    """
+	message: "[Task] Runs Geolocation for a list of names"
+	log: "logs/name2geo.log"
+	input: 
+		"data/domain_name.in"
+	output: 
+		"data/name2geo.csv"
+	shell: 
+		"scripts/GeoLocate/host2geo.sh {input} {output} {log}"
+		
+### END ###

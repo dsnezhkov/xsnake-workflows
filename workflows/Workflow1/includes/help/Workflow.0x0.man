@@ -1,0 +1,18 @@
+######################## Workflow: 0x0 #############################
+
+"""
+BEGIN: 
+	@in: a domain name to test
+
+END: 
+	@out: a table of IPs, ports and services found
+
+AUTHOR: D.Snezhkov
+REVISION HISTORY:
+	- 04/10 [AUTHOR] - Description of  change
+
+META A:
+META B: 
+"""
+###################################################################
+

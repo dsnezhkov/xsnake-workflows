@@ -1,0 +1,12 @@
+Exception in thread "main" java.lang.NullPointerException
+	at ISSCityLookup.main(ISSCityLookup.java:22)
+104.215.148.63: geo failed
+Exception in thread "main" java.lang.NullPointerException
+	at ISSCityLookup.main(ISSCityLookup.java:22)
+104.244.42.193: geo failed
+Exception in thread "main" java.lang.NullPointerException
+	at ISSCityLookup.main(ISSCityLookup.java:22)
+104.244.42.1: geo failed
+Exception in thread "main" java.lang.NullPointerException
+	at ISSCityLookup.main(ISSCityLookup.java:22)
+23.227.38.32: geo failed
