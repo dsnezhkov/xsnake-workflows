@@ -1,0 +1,36 @@
+### BEGIN ###
+
+# XXX: Actual version is 5.3.0 for python 3.6.8 install
+# from snakemake.utils import min_version
+# min_version("5.7.4")
+
+include: "includes/help/Workflow.man"
+
+rule all:
+	"""Phony: Runs all dnsrecon tasks
+   	Type: Task (Phony)
+    Parameters:
+		The set of output files to recursively kick off the recon
+
+    Returns:
+		None
+	"""
+	input:
+		"data/domains_inscope.txt",
+		"data/domains_outofscope.txt",
+		"data/domains_didnotresolve.txt"
+
+rule dns_lookup_scope_filter:
+	input:
+		"data/domains.txt",
+		"data/ips_in_scope.txt"
+	output:
+		"data/domains_inscope.txt",
+		"data/domains_outofscope.txt",
+		"data/domains_didnotresolve.txt"
+	log:
+		"logs/dns_lookup_scope_filter.log"
+	script:
+		"scripts/dns_filter.py"
+
+### END ###
