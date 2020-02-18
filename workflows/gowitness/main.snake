@@ -51,8 +51,10 @@ rule gowitness:
 	log:
 		screenshots="screenshots",
 		log="logs/gowitness.log"
-	
+	# the following lets the snakemake scheduler handle scheduling appropriately
+	# see: https://snakemake.readthedocs.io/en/stable/tutorial/advanced.html#step-1-specifying-the-number-of-used-threads
+	threads: 4
 	shell:
-		"mkdir -p {log.screenshots}; mkdir -p $(dirname {log.log}); gowitness file -s {input} -D {output} -d {log.screenshots} 2> {log.log}"
+		"mkdir -p {log.screenshots}; mkdir -p $(dirname {log.log}); gowitness file -t {threads} -s {input} -D {output} -d {log.screenshots} 2> {log.log}"
 
 ### END ###
