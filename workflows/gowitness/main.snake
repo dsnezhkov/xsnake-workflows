@@ -1,0 +1,58 @@
+### BEGIN ###
+
+# from snakemake.utils import min_version
+# min_version("5.7.4")
+
+include: "includes/help/Workflow.man"
+
+rule all:
+	"""Phony: Runs all tasks
+   	Type: Task (Phony)
+    Parameters:
+		The last output file that starts the recursive chain of tasks
+
+    Returns:
+		None
+	"""
+	input:
+		"data/gowitness.db"
+
+rule domains_2_http_https:
+    """Prepends http:// to domains
+
+    Type: Glue
+    Parameters:
+    Returns:
+    Notes: 
+
+    """
+    input:
+        "data/domains.txt"
+    output:
+        "data/http_domains.txt"
+    run:
+        shell("sed -e 's/^/http:\/\//' {input} > {output} "),
+        shell("sed -e 's/^/https:\/\//' {input} >> {output} ")
+
+rule gowitness:
+	"""Runs gowitness on a set of domains
+
+	Type: Task
+	Parameters:
+	Returns:
+	Notes:
+
+	"""
+
+	input:
+		"data/http_domains.txt"
+	output:
+		"data/gowitness.db"
+	log:
+		screenshots="screenshots",
+		log="logs/gowitness.log"
+	
+	shell:
+		"mkdir -p {log.screenshots}; mkdir -p $(dirname {log.log}); gowitness file -s {input} -D {output} -d {log.screenshots} 2> {log.log}"
+
+### END ###
